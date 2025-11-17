@@ -7,11 +7,15 @@ import ScrollProgressBar from './components/ScrollProgressBar.vue'
 <template>
   <ScrollProgressBar />
   <WindowSizeDisplay />
-  <div style="height: 2000px; padding-top: 50px;">
-    <p>Scroll down to see the button</p>
+  <div class="contenedor-texto-principal">
+    <p>Haz scroll para ver el boton</p>
   </div>
   <ScrollToTopButton />
 </template>
 
 <style scoped>
+  .contenedor-texto-principal {
+    height: 2000px; 
+    padding-top: 50px;
+  }
 </style>
