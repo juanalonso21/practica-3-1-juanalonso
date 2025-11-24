@@ -1,9 +1,12 @@
 <script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
 import DrowDownMenu from './components/DropDownMenu.vue'
+import FullscreenWrapper from './components/FullscreenWrapper.vue';
 </script>
 
 <template>
   <DrowDownMenu/> 
+  <FullscreenWrapper>
+    <img src="https://picsum.photos/800/600" alt="Imagen de ejemplo" />
+  </FullscreenWrapper>
 </template>
+  
