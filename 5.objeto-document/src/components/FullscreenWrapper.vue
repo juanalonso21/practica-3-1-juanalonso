@@ -28,7 +28,11 @@ const isFullscreen = ref(false);
 
 // 2. Método para alternar el estado
 const toggleFullscreen = async () => {
-  if (!wrapperRef.value) return;
+  if (!wrapperRef.value) {
+    console.log('wrapperRef is null');
+    return;
+  }
+  console.log('wrapperRef is present', wrapperRef.value);
 
   try {
     if (document.fullscreenElement) {
@@ -59,6 +63,8 @@ onMounted(() => {
 onUnmounted(() => {
   document.removeEventListener('fullscreenchange', handleFullscreenChange);
 });
+
+defineExpose({ wrapperRef });
 </script>
 
 <style scoped>

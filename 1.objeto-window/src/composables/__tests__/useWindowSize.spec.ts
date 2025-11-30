@@ -19,15 +19,15 @@ describe('useWindowSize', () => {
     expect(wrapper.vm.width).toBe(window.innerWidth)
     expect(wrapper.vm.height).toBe(window.innerHeight)
 
-    // Simulate window resize
+    // Simular el cambio de tamaño de la ventana
     window.innerWidth = 1024
     window.innerHeight = 768
     window.dispatchEvent(new Event('resize'))
 
-    // Wait for Vue to update
+    // Espere a que Vue procese el cambio de estado
     await wrapper.vm.$nextTick()
 
-    // Check updated values
+    // Verificar los valores actualizados
     expect(wrapper.vm.width).toBe(1024)
     expect(wrapper.vm.height).toBe(768)
   })

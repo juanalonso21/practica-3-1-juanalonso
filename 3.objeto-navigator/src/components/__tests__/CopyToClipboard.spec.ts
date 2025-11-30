@@ -1,4 +1,4 @@
-import { mount } from '@vue/test-utils';
+import { mount, flushPromises } from '@vue/test-utils';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import CopyToClipboard from '../CopyToClipboard.vue';
 
@@ -15,14 +15,14 @@ describe('CopyToClipboard.vue', () => {
 
     Object.defineProperty(navigator, 'clipboard', {
       value: mockClipboard,
-      configurable: true, 
+      configurable: true,
       writable: true,
     });
   };
 
   beforeEach(() => {
     setupClipboardMock();
-    vi.clearAllMocks(); 
+    vi.clearAllMocks();
   });
 
   afterEach(() => {
@@ -57,8 +57,9 @@ describe('CopyToClipboard.vue', () => {
 
     expect(mockWriteText).toHaveBeenCalled();
 
-    await new Promise(process.nextTick); 
-    
+    await flushPromises();
+    await new Promise(r => setTimeout(r, 100));
+
     expect(wrapper.text()).toContain('Error al copiar');
   });
 });

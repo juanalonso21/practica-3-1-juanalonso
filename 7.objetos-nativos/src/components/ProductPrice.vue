@@ -9,7 +9,7 @@
 import { computed } from 'vue';
 import { useCurrencyFormatter } from '@/composables/useCurrencyFormatter.ts';
 
-// 1. Definición de Props
+// Definición de Props
 interface Props {
   price: number;
   locale: string; // Ej: 'es-ES', 'en-US'
@@ -18,14 +18,13 @@ interface Props {
 
 const props = defineProps<Props>();
 
-// 2. Usamos el composable
+// Usamos el composable
 const { formatCurrency } = useCurrencyFormatter();
 
 // 3. Propiedad Computada
 // Es importante usar computed para que si el precio cambia, 
 // el formato se actualice automáticamente.
 const formattedPrice = computed(() => {
-  // Buena práctica: manejar casos donde price pueda ser undefined o null
   if (props.price === undefined || props.price === null) return '-';
   
   return formatCurrency(props.price, props.locale, props.currencyCode);
