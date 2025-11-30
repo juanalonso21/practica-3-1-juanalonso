@@ -9,11 +9,11 @@ const { isOnline } = useOnlineStatus();
 <template>
   <div class="status-indicator">
     <span v-if="isOnline" class="badge success">
-      🟢 Conectado
+       Conectado
     </span>
     
     <span v-else class="badge error">
-      🔴 Sin conexión
+       Sin conexión
     </span>
   </div>
 </template>
@@ -32,14 +32,12 @@ const { isOnline } = useOnlineStatus();
   font-weight: 600;
 }
 
-/* Estilo para estado Online */
 .success {
   background-color: #e6fffa;
   color: #047857;
   border: 1px solid #047857;
 }
 
-/* Estilo para estado Offline */
 .error {
   background-color: #fff5f5;
   color: #c53030;

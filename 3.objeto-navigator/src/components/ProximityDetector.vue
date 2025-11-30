@@ -30,7 +30,7 @@ const nearbyFriends = computed(() => {
 
 <template>
   <div class="radar-container">
-    <h2>📡 Radar de Amigos</h2>
+    <h2>Radar de Amigos</h2>
 
     <div class="status-panel">
       <div v-if="error" class="alert error">{{ error }}</div>
@@ -41,7 +41,7 @@ const nearbyFriends = computed(() => {
       </div>
       
       <div v-else class="loading">
-        📍 Buscando satélites...
+         Buscando...
       </div>
     </div>
 
@@ -54,12 +54,12 @@ const nearbyFriends = computed(() => {
         <li v-for="friend in nearbyFriends" :key="friend.id" class="friend-card">
           <span class="avatar"></span>
           <span class="name">{{ friend.name }}</span>
-          <span class="status-badge">¡Aquí cerca!</span>
+          <span class="status-badge">Cerca</span>
         </li>
       </ul>
 
       <div v-else-if="coords" class="empty-state">
-        <p>Nadie cerca por ahora. ¡Sigue moviéndote!</p>
+        <p>Nadie cerca por ahora.</p>
       </div>
     </div>
   </div>
@@ -93,7 +93,7 @@ const nearbyFriends = computed(() => {
 .friend-card {
   display: flex;
   align-items: center;
-  background: #ecfdf5; /* Verde clarito */
+  background: #ecfdf5; 
   padding: 10px;
   margin-bottom: 8px;
   border-radius: 8px;

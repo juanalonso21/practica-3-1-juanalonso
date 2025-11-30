@@ -1,94 +1,97 @@
-import { mount } from '@vue/test-utils';
+import { mount, flushPromises } from '@vue/test-utils';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import FullscreenWrapper from '../FullscreenWrapper.vue';
 
 describe('FullscreenWrapper.vue', () => {
-  // Spies para los métodos nativos
   let requestFullscreenSpy: any;
   let exitFullscreenSpy: any;
 
   beforeEach(() => {
-    // 1. Mockear requestFullscreen en el prototipo de HTMLElement
-    // Esto permite que CUALQUIER elemento del DOM tenga este método simulado
+    // Asegurar que requestFullscreen exista en HTMLElement.prototype
+    if (!HTMLElement.prototype.requestFullscreen) {
+      HTMLElement.prototype.requestFullscreen = vi.fn();
+    }
+
+    // Simular (Mock) requestFullscreen
     requestFullscreenSpy = vi.spyOn(HTMLElement.prototype, 'requestFullscreen')
       .mockImplementation(() => Promise.resolve());
 
-    // 2. Mockear document.exitFullscreen
+    // Simular document.exitFullscreen
+    // Asegurar que exista
+    if (!document.exitFullscreen) {
+      (document as any).exitFullscreen = vi.fn();
+    }
     exitFullscreenSpy = vi.spyOn(document, 'exitFullscreen')
       .mockImplementation(() => Promise.resolve());
 
-    // 3. Mockear la propiedad de solo lectura document.fullscreenElement
-    // Usamos defineProperty porque es un getter
+    // Simular document.fullscreenElement
     Object.defineProperty(document, 'fullscreenElement', {
       value: null,
-      writable: true, // Permitimos sobrescribirlo en los tests
+      writable: true,
       configurable: true
     });
   });
 
   afterEach(() => {
     vi.restoreAllMocks();
+    // ¿Limpiar si agregamos métodos? No es necesario, la restauración del spy (restore) suele manejarlo,
+    // pero si lo agregamos manualmente, quizás queramos eliminarlo.
+    // Sin embargo, como jsdom no lo tiene nativamente, dejarlo está bien.
   });
 
   it('debe llamar a requestFullscreen al entrar en pantalla completa', async () => {
-    // Estado inicial: No hay elemento en fullscreen
-    Object.defineProperty(document, 'fullscreenElement', { value: null });
+    const wrapper = mount(FullscreenWrapper, {
+      attachTo: document.body
+    });
 
-    const wrapper = mount(FullscreenWrapper);
-    
-    // Simulamos clic
     await wrapper.find('button').trigger('click');
+    await flushPromises();
 
-    // Verificamos que se llamó al método en el elemento raíz del componente
     expect(requestFullscreenSpy).toHaveBeenCalled();
-    
-    // Opcional: Verificar que NO se llamó a exit
     expect(exitFullscreenSpy).not.toHaveBeenCalled();
+
+    wrapper.unmount();
   });
 
   it('debe llamar a exitFullscreen si ya está en pantalla completa', async () => {
-    const wrapper = mount(FullscreenWrapper);
-    
-    // Simulamos que NUESTRO elemento ya está en fullscreen
-    // Accedemos al elemento del DOM real del wrapper
-    Object.defineProperty(document, 'fullscreenElement', { 
-      value: wrapper.element 
+    const wrapper = mount(FullscreenWrapper, {
+      attachTo: document.body
     });
 
-    // Simulamos clic
-    await wrapper.find('button').trigger('click');
+    // Simular que nuestro elemento ya está en pantalla completa
+    vi.spyOn(document, 'fullscreenElement', 'get').mockReturnValue((wrapper.vm as any).wrapperRef);
 
-    // Verificamos que se llamó a salir
+    await wrapper.find('button').trigger('click');
+    await flushPromises();
+
     expect(exitFullscreenSpy).toHaveBeenCalled();
     expect(requestFullscreenSpy).not.toHaveBeenCalled();
+
+    wrapper.unmount();
   });
 
   it('debe actualizar el estado reactivo isFullscreen cuando ocurre el evento fullscreenchange', async () => {
-    const wrapper = mount(FullscreenWrapper);
-    
-    // Comprobación inicial: Texto del botón para estado normal
-    expect(wrapper.find('button').text()).toContain('Entrar a Pantalla Completa');
-
-    // 1. Simulamos que el navegador ha entrado en fullscreen
-    Object.defineProperty(document, 'fullscreenElement', { 
-      value: wrapper.element 
+    const wrapper = mount(FullscreenWrapper, {
+      attachTo: document.body
     });
 
-    // 2. Disparamos manualmente el evento que el navegador lanzaría
+    expect(wrapper.find('button').text()).toContain('Entrar a Pantalla Completa');
+
+    // Simular entrar a pantalla completa
+    vi.spyOn(document, 'fullscreenElement', 'get').mockReturnValue((wrapper.vm as any).wrapperRef);
+
     document.dispatchEvent(new Event('fullscreenchange'));
-    
-    // Esperamos a que Vue reaccione
     await wrapper.vm.$nextTick();
 
-    // 3. Comprobamos que el texto del botón cambió
     expect(wrapper.find('button').text()).toContain('Salir de Pantalla Completa');
-    
-    // 4. Simulamos salida (usuario pulsa ESC)
-    Object.defineProperty(document, 'fullscreenElement', { value: null });
+
+    // Simular salir de pantalla completa
+    vi.spyOn(document, 'fullscreenElement', 'get').mockReturnValue(null);
     document.dispatchEvent(new Event('fullscreenchange'));
     await wrapper.vm.$nextTick();
-    
-    // Texto vuelve a la normalidad
+
     expect(wrapper.find('button').text()).toContain('Entrar a Pantalla Completa');
+
+    wrapper.unmount();
   });
 });
