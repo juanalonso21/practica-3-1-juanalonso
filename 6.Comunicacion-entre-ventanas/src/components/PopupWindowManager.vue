@@ -1,4 +1,4 @@
-iero<script setup lang="ts">
+<script setup lang="ts">
 import { ref, computed } from 'vue'
 
 const popupWindow = ref<WindowProxy | null>(null)
