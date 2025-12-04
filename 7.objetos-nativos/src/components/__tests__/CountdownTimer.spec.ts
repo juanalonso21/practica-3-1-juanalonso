@@ -19,8 +19,8 @@ describe('CountdownTimer.vue', () => {
 
         // 2. Monta el componente pasándole una targetDate futura
         // 1 día, 2 horas, 30 minutos y 30 segundos después
-        // 1 day = 86400000
-        // 2 hours = 7200000
+        // 1 día = 86400000
+        // 2 horas = 7200000
         // 30 mins = 1800000
         // 30 secs = 30000
         // Total = 95430000

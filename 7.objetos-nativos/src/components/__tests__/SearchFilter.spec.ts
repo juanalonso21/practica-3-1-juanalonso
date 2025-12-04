@@ -9,7 +9,7 @@ describe('SearchFilter.vue', () => {
     { id: 2, name: 'Componentes Avanzados' },
     { id: 3, name: 'Vue Router y Pinia' },
     { id: 4, name: 'JavaScript Moderno' },
-    { id: 5, name: 'Fundamentos de React' } 
+    { id: 5, name: 'Fundamentos de React' }
   ];
 
   it('debe filtrar la lista correctamente cuando se escribe en el input', async () => {
@@ -26,13 +26,13 @@ describe('SearchFilter.vue', () => {
 
     // 3. Comprobación: Debería haber 2 resultados ('Introducción a Vue.js' y 'Vue Router y Pinia')
     expect(listItems).toHaveLength(2);
-    
+
     // Comprobamos que el texto filtrado es correcto
     expect(listItems[0]!.text()).toContain('Introducción a Vue.js');
     expect(listItems[1]!.text()).toContain('Vue Router y Pinia');
   });
 
-  it('debe resaltar el texto coincidente con la etiqueta <mark> (case insensitive)', async () => {
+  it('debe resaltar el texto coincidente con la etiqueta <mark> (insensible a mayúsculas/minúsculas)', async () => {
     const wrapper = mount(SearchFilter, {
       props: { items: mockItems }
     });
@@ -52,7 +52,7 @@ describe('SearchFilter.vue', () => {
     // Esperamos que "Java" (con J mayúscula original) esté envuelto en <mark>
     // aunque buscamos "java" (minúscula).
     const expectedHTML = '<mark>Java</mark>Script Moderno';
-    
+
     expect(resultSpan.element.innerHTML).toBe(expectedHTML);
   });
 
