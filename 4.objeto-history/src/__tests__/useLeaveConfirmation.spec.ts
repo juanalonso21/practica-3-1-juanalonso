@@ -30,9 +30,8 @@ describe('useLeaveConfirmation composable', () => {
       template: '<div></div>'
     })
     const wrapper = mount(TestComponent)
-    // toggle to true
     wrapper.vm.hasUnsaved = true
-    await new Promise((r) => setTimeout(r, 0)) // next tick
+    await new Promise((r) => setTimeout(r, 0)) 
     expect(addSpy).toHaveBeenCalledWith('beforeunload', expect.any(Function))
   })
 
@@ -46,7 +45,6 @@ describe('useLeaveConfirmation composable', () => {
       template: '<div></div>'
     })
     const wrapper = mount(TestComponent)
-    // toggle to false
     wrapper.vm.hasUnsaved = false
     await new Promise((r) => setTimeout(r, 0))
     expect(removeSpy).toHaveBeenCalledWith('beforeunload', expect.any(Function))

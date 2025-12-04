@@ -2,7 +2,6 @@ import { mount } from '@vue/test-utils'
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import InfiniteScrollList from '@/components/InfiniteScrollList.vue'
 
-// Mock fetch globally
 const mockPokemons = (page: number) => {
   const start = (page - 1) * 20 + 1
   const results = Array.from({ length: 20 }, (_, i) => ({
@@ -33,7 +32,6 @@ describe('InfiniteScrollList.vue', () => {
 
   it('loads first page on mount and renders items', async () => {
     const wrapper = mount(InfiniteScrollList)
-    // wait for async load
     await new Promise((r) => setTimeout(r, 0))
     expect(fetchSpy).toHaveBeenCalledTimes(1)
     expect(wrapper.findAll('.pokemon-item').length).toBe(20)
@@ -43,15 +41,11 @@ describe('InfiniteScrollList.vue', () => {
   it('loads next page when scroll near bottom and updates URL', async () => {
     const wrapper = mount(InfiniteScrollList)
     await new Promise((r) => setTimeout(r, 0))
-    // Simulate scroll near bottom by calling the scroll handler directly
     const scrollContainer = wrapper.find('.infinite-scroll').element as HTMLElement
-    // Force scroll values
     Object.defineProperty(scrollContainer, 'scrollTop', { value: 1000, writable: true })
     Object.defineProperty(scrollContainer, 'scrollHeight', { value: 1200, writable: true })
     Object.defineProperty(scrollContainer, 'clientHeight', { value: 200, writable: true })
-    // Trigger scroll event
     await scrollContainer.dispatchEvent(new Event('scroll'))
-    // Wait for next load
     await new Promise((r) => setTimeout(r, 0))
     expect(fetchSpy).toHaveBeenCalledTimes(2)
     expect(replaceStateSpy).toHaveBeenCalledWith({ page: 2 }, '', '?page=2')

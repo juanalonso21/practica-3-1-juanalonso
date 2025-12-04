@@ -2,15 +2,10 @@
 import { ref, computed } from 'vue'
 import { useLeaveConfirmation } from '@/composables/useLeaveConfirmation'
 
-// Reactive content of the textarea
 const editedContent = ref<string>('')
-// Original saved content (could be fetched from an API in real app)
 const originalContent = ref<string>('')
-
-// Computed flag indicating if there are unsaved changes
 const hasUnsavedChanges = computed(() => editedContent.value !== originalContent.value)
 
-// Activate the guard composable
 useLeaveConfirmation(hasUnsavedChanges)
 
 const saveChanges = () => {
@@ -41,7 +36,6 @@ const saveChanges = () => {
   padding: 10px;
   border: 1px solid #666;
   resize: vertical;
-  font-family: inherit;
   font-size: 16px;
   background: #333;
   color: #fff;

@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 
-// Active tab name (e.g., 'perfil', 'facturacion', 'seguridad')
 const activeTab = ref<string>('perfil')
 
 const changeTab = (tabName: string) => {
@@ -11,10 +10,9 @@ const changeTab = (tabName: string) => {
   history.pushState(state, '', newUrl)
 }
 
-// Optional: set initial tab based on current URL (if needed)
 onMounted(() => {
   const parts = window.location.pathname.split('/').filter(Boolean)
-  const last = parts[parts.length - 1] ?? 'perfil' // fallback por si es undefined
+  const last = parts[parts.length - 1] ?? 'perfil' 
   if (['perfil', 'facturacion', 'seguridad'].includes(last)) {
     activeTab.value = last
   }

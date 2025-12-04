@@ -3,32 +3,25 @@ import { ref, onMounted } from 'vue'
 import { usePokemonFetcher } from '@/composables/usePokemonFetcher'
 import { useScrollDetector } from '@/composables/useScrollDetector'
 
-// Reactive page counter
 const currentPage = ref<number>(1)
 
-// Fetcher composable
 const { isLoading, pokemons, loadMorePokemons } = usePokemonFetcher()
 
-// Load first page on mount
 onMounted(() => {
   loadMorePokemons(currentPage.value)
 })
 
-// Scroll container ref
 const scrollContainer = ref<HTMLElement | null>(null)
 
-// Callback when near bottom
 const loadNextPage = () => {
   if (isLoading.value) return
   currentPage.value += 1
   loadMorePokemons(currentPage.value).then(() => {
-    // Update URL without reloading
     const newUrl = `?page=${currentPage.value}`
     history.replaceState({ page: currentPage.value }, '', newUrl)
   })
 }
 
-// Attach scroll detector
 useScrollDetector(scrollContainer, loadNextPage)
 </script>
 
@@ -45,7 +38,7 @@ useScrollDetector(scrollContainer, loadNextPage)
 
 <style scoped>
 .infinite-scroll {
-  height: 400px; /* Fixed height for scrolling */
+  height: 400px; 
   overflow-y: auto;
   padding: 15px;
   background-color: #222;

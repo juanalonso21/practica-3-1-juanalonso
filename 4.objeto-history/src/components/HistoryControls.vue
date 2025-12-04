@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 
-// Reactive reference to the length of the history stack
 const historyLength = ref<number>(0)
 
 const updateHistoryLength = () => {
@@ -10,11 +9,9 @@ const updateHistoryLength = () => {
 
 onMounted(() => {
   updateHistoryLength()
-  // Listen for popstate events to keep the length up‑to‑date when user navigates
   window.addEventListener('popstate', updateHistoryLength)
 })
 
-// Navigation methods
 const goBack = () => {
   history.back()
 }

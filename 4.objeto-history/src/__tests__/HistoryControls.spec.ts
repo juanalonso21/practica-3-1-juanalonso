@@ -3,7 +3,6 @@ import { describe, it, expect, vi } from 'vitest'
 import HistoryControls from '@/components/HistoryControls.vue'
 
 describe('HistoryControls.vue', () => {
-  // Mock history methods
   const backSpy = vi.spyOn(window.history, 'back')
   const forwardSpy = vi.spyOn(window.history, 'forward')
   const goSpy = vi.spyOn(window.history, 'go')

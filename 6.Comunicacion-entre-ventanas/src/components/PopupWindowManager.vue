@@ -4,7 +4,7 @@ import { ref, computed } from 'vue'
 const popupWindow = ref<WindowProxy | null>(null)
 
 const openPopup = () => {
-  const url = 'https://franparra.com' // URL_DE_PRUEBA
+  const url = 'https://franparra.com' 
   const features = 'width=600,height=400'
   const newWindow = window.open(url, '_blank', features)
   if (newWindow) {

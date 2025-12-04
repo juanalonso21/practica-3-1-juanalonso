@@ -5,7 +5,6 @@ import UnsavedChangesForm from '@/components/UnsavedChangesForm.vue'
 import InfiniteScrollList from '@/components/InfiniteScrollList.vue'
 import { ref } from 'vue'
 
-// Simple navigation state to switch between exercises
 const currentExercise = ref<'controls' | 'tabs' | 'unsaved' | 'infinite'>('controls')
 </script>
 
